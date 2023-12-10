@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Particle System</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/processing.js/1.6.6/processing.js"></script>
+</head>
+
+<body>
+    <canvas id="myCanvas"></canvas>
+
+    <script type="text/javascript">
+        var totalParticles = 100;
+        var particles = new Array(totalParticles);
+
+        var targetX = 0.0;
+        var targetY = 0.0;
+
+        var width, height;
+
+        function setup() {
+            width = window.innerWidth;
+            height = window.innerHeight;
+            var canvas = createCanvas(width, height);
+            canvas.parent('myCanvas');
+            noStroke();
+            smooth();
+            background(0);
+            for (var i = 0; i < totalParticles; i++) {
+                var particle = new Particle();
+                particles[i] = particle;
+            }
+        }
+
+        function draw() {
+            fill(color(0, 0, 0, 20));
+            rect(0, 0, width, height);
+
+            for (var i = 0; i < totalParticles; i++) {
+                particles[i].update();
+                particles[i].render();
+            }
+        }
+
+        var particleIndex = 0;
+
+        function mouseMoved(e) {
+            targetX += (e.offsetX - targetX) * 0.2;
+            targetY += (e.offsetY - targetY) * 0.2;
+            var nextParticle = particles[particleIndex];
+            nextParticle.reset(targetX, targetY);
+            if (++particleIndex >= particles.length) particleIndex = 0;
+        }
+
+        function Particle() {
+            this.x = 0.0;
+            this.y = 0.0;
+            this.vx = 0.0;
+            this.vy = 0.0;
+            this.r = 255;
+            this.g = 255;
+            this.b = 255;
+            this.a = 255;
+            this.color = color(255, 255, 255, 255);
+            this.life = 0;
+        }
+
+        Particle.prototype.update = function () {
+            if (this.life > 0) {
+                this.life--;
+                if (this.life < 50) {
+                    this.x += this.vx;
+                    this.y += this.vy;
+                    this.vx += Math.random() * 4 - 2;
+                    this.vy += Math.random() * 4 - 2;
+                    this.vx *= 0.9;
+                    this.vy *= 0.9;
+                    this.a = 255 * (this.life / 50.0);
+                }
+            }
+        };
+
+        Particle.prototype.reset = function (_x, _y) {
+            this.x = _x;
+            this.y = _y;
+            this.vx = Math.random() * 4 - 2;
+            this.vy = Math.random() * 4 - 2;
+            this.life = 150;
+            this.g = map(_x, 0, width, 0, 255);
+            this.b = map(_y, 0, height, 0, 255);
+            this.a = 255;
+        };
+
+        Particle.prototype.render = function () {
+            fill(color(this.r, this.g, this.b, this.a));
+            ellipse(this.x, this.y, 5, 5);
+        };
+    </script>
+</body>
+
+</html>
