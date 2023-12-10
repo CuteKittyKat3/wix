@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>p5.js Sketch</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
+</head>
+<body>
+  <script>
+    let r = 1;
+    let padding = 25; // when r = padding it looks cool!
+    let COUNT = 0;
+    let num_of_balls = 0;
+    let size = [];
+    let xPosition = [];
+    let yPosition = [];
+    let xPosition_up = [];
+    let yPosition_up = [];
+
+    function setup() {
+      createCanvas(600, 600);
+
+      for (let i = padding / 2; i < width; i += padding) {
+        num_of_balls++;
+      }
+
+      size = new Array(num_of_balls * num_of_balls);
+      xPosition = new Array(num_of_balls * num_of_balls);
+      yPosition = new Array(num_of_balls * num_of_balls);
+      xPosition_up = new Array(num_of_balls * num_of_balls);
+      yPosition_up = new Array(num_of_balls * num_of_balls);
+
+      for (let i = 0; i < num_of_balls; i++) {
+        for (let j = 0; j < num_of_balls; j++) {
+          size[COUNT] = r;
+          COUNT++;
+        }
+      }
+    }
+
+    function draw() {
+      background(255);
+      let COUNT2 = 0;
+      for (let i = padding / 2; i < width; i += padding) {
+        for (let j = padding / 2; j < height; j += padding) {
+
+          fill(0);
+
+          xPosition[COUNT2] = j;
+          yPosition[COUNT2] = i;
+
+          changeSize(i, j, COUNT2);
+
+          let I, J;
+          let d = dist(i, j, mouseX, mouseY);
+          let maxDist = 150;
+
+          if (d <= maxDist) {
+            if (i <= mouseX) {
+              I = map(d, maxDist, 0, i, i - 50);
+            } else {
+              I = map(d, 0, maxDist, i + 50, i);
+            }
+
+            if (j <= mouseY) {
+              J = map(d, maxDist, 0, j, j - 50);
+            } else {
+              J = map(d, 0, maxDist, j + 50, j);
+            }
+          } else {
+            I = i;
+            J = j;
+          }
+          xPosition_up[COUNT2] = I;
+          yPosition_up[COUNT2] = J;
+
+          circle(i, j, size[COUNT2]);
+          COUNT2++;
+        }
+      }
+    }
+
+    function changeSize(i, j, COUNT2) {
+      let R;
+      let d = dist(i, j, mouseX, mouseY);
+      let maxDist = 150;
+
+      if (d <= maxDist) {
+        R = map(d, 0, maxDist, padding / 2 + 7, r);
+      } else {
+        R = r;
+      }
+      size[COUNT2] = R;
+    }
+  </script>
+</body>
+</html>
