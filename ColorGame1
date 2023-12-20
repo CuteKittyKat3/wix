@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Pixel Collector Game</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0; /* Lighter grey background */
+        }
+
+        #munchButton {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+        }
+
+        canvas {
+            box-shadow: 0px 0px 10px 0px #000; /* Black border effect */
+        }
+    </style>
+</head>
+<body>
+    <button id="munchButton">STOP NOW AND MUNCH ON COLORS</button>
+    <script src="ColorgGame1.js"></script>
+
+</body>
+</html>
